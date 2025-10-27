@@ -6,8 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir dist
-      - run: cp index.html dist/index.html
+        with:
+          repository: emscripten-core/emsdk
+          path: emsdk
+      - run: emsdk/emsdk --help
+      - run: emsdk/emsdk install latest
+      - run: emsdk/emsdk activate latest
+      - run: source emsdk/emsdk_env.sh
+      - uses: actions/checkout@v4
+      - run: emcmake cmake -S . -B build
       - uses: actions/upload-pages-artifact@v4
         with:
           path: dist
